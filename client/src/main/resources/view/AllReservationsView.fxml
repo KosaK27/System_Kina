@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.EmployeeReservationController"
+      spacing="8">
+    <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+
+    <HBox spacing="8" alignment="CENTER_LEFT">
+        <TextField fx:id="searchField" prefWidth="280"
+                   promptText="Szukaj po użytkowniku lub filmie..."
+                   onAction="#search"/>
+        <Button text="Szukaj"  onAction="#search"/>
+        <Button text="Wyczyść" onAction="#clearFilter"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Opłać"  onAction="#paySelected"/>
+        <Button text="Anuluj" onAction="#cancelSelected"/>
+    </HBox>
+
+    <FlowPane fx:id="statusBoxesPane" hgap="12" vgap="4"/>
+
+    <TableView fx:id="reservationTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="resIdCol"
+                         text="ID" prefWidth="50" sortable="true"/>
+            <TableColumn fx:id="resUserCol"
+                         text="Użytkownik" prefWidth="130" sortable="true"/>
+            <TableColumn fx:id="resMovieCol"
+                         text="Film" prefWidth="170" sortable="true"/>
+            <TableColumn fx:id="resTimeCol"
+                         text="Data seansu" prefWidth="140" sortable="true"/>
+            <TableColumn fx:id="resSeatCol"
+                         text="Miejsca" prefWidth="100" sortable="true"/>
+            <TableColumn fx:id="resStatusCol"
+                         text="Status" prefWidth="110" sortable="true"/>
+            <TableColumn fx:id="resPriceCol"
+                         text="Cena" prefWidth="80" sortable="true"/>
+        </columns>
+    </TableView>
+
+    <Label fx:id="statusLabel"/>
+</VBox>

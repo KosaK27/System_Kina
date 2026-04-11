@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.RegisterController"
+      alignment="CENTER" spacing="12"
+      prefWidth="400" prefHeight="360">
+    <padding>
+        <Insets top="40" right="60" bottom="40" left="60"/>
+    </padding>
+
+    <Label text="Nowe konto"
+           style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <TextField fx:id="nameField" promptText="Nazwa użytkownika"/>
+    <TextField fx:id="emailField" promptText="Adres email"/>
+    <PasswordField fx:id="passwordField" promptText="Hasło (min. 4 znaki)"/>
+    <PasswordField fx:id="confirmField" promptText="Powtórz hasło"/>
+
+    <Label fx:id="messageLabel" wrapText="true" maxWidth="280"
+           style="-fx-text-fill: red;"/>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button fx:id="registerButton" text="Utwórz konto"
+                onAction="#register"/>
+        <Button text="Wróć" onAction="#goToLogin"/>
+    </HBox>
+</VBox>

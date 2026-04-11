@@ -1,0 +1,19 @@
+[ {
+  "id" : 1,
+  "name" : "Sala A",
+  "rows" : 8,
+  "seatsPerRow" : 10,
+  "totalSeats" : 80
+}, {
+  "id" : 2,
+  "name" : "Sala B",
+  "rows" : 6,
+  "seatsPerRow" : 8,
+  "totalSeats" : 48
+}, {
+  "id" : 3,
+  "name" : "Sala VIP",
+  "rows" : 4,
+  "seatsPerRow" : 6,
+  "totalSeats" : 24
+} ]

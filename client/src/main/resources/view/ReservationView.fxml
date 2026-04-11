@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.ReservationController"
+      spacing="8">
+    <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+
+    <HBox spacing="8" alignment="CENTER_LEFT">
+        <TextField fx:id="searchField"
+                   promptText="Szukaj po filmie..."
+                   prefWidth="260" onAction="#search"/>
+        <Button text="Szukaj" onAction="#search"/>
+        <Button text="Wyczyść" onAction="#clearFilter"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Opłać" onAction="#payForSelected"/>
+        <Button text="Anuluj" onAction="#cancelSelected"/>
+    </HBox>
+
+    <FlowPane fx:id="statusCheckboxes" hgap="12" vgap="4"/>
+
+    <TableView fx:id="reservationTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="idColumn"
+                         text="ID" prefWidth="50" sortable="true"/>
+            <TableColumn fx:id="movieColumn"
+                         text="Film" prefWidth="180" sortable="true"/>
+            <TableColumn fx:id="hallColumn"
+                         text="Sala" prefWidth="100" sortable="true"/>
+            <TableColumn fx:id="timeColumn"
+                         text="Data seansu" prefWidth="130" sortable="true"/>
+            <TableColumn fx:id="seatsColumn"
+                         text="Miejsca" prefWidth="100" sortable="true"/>
+            <TableColumn fx:id="statusColumn"
+                         text="Status" prefWidth="110" sortable="true"/>
+            <TableColumn fx:id="priceColumn"
+                         text="Cena (zł)" prefWidth="80" sortable="true"/>
+        </columns>
+    </TableView>
+
+    <Label fx:id="statusLabel"/>
+</VBox>

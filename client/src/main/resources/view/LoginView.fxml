@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.LoginController"
+      alignment="CENTER" spacing="12"
+      prefWidth="400" prefHeight="300">
+    <padding><Insets top="50" right="60" bottom="50" left="60"/></padding>
+
+    <Label text="System Kina"
+           style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+    <TextField fx:id="credentialField"
+               promptText="Nazwa użytkownika lub email"/>
+
+    <PasswordField fx:id="passwordField"
+                   promptText="Hasło"/>
+
+    <Label fx:id="messageLabel" wrapText="true" maxWidth="280"
+           style="-fx-text-fill: red;"/>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button fx:id="loginButton"    text="Zaloguj"
+                onAction="#login"/>
+        <Button fx:id="registerButton" text="Zarejestruj się"
+                onAction="#goToRegister"/>
+    </HBox>
+
+    <Label text="Admin/admin123 · Pracownik/pracownik123 · Klient/klient123"
+           style="-fx-font-size: 10px;"
+           wrapText="true" maxWidth="280" textAlignment="CENTER"/>
+</VBox>

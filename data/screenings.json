@@ -1,0 +1,25 @@
+[ {
+  "id" : 1,
+  "movieId" : 1,
+  "hallId" : 1,
+  "startTime" : "2026-04-12T18:00:17.8823129",
+  "ticketPrice" : 25.0
+}, {
+  "id" : 2,
+  "movieId" : 1,
+  "hallId" : 2,
+  "startTime" : "2026-04-13T20:30:17.8823129",
+  "ticketPrice" : 25.0
+}, {
+  "id" : 3,
+  "movieId" : 2,
+  "hallId" : 1,
+  "startTime" : "2026-04-12T15:00:17.8823129",
+  "ticketPrice" : 20.0
+}, {
+  "id" : 4,
+  "movieId" : 3,
+  "hallId" : 3,
+  "startTime" : "2026-04-14T19:00:17.8823129",
+  "ticketPrice" : 35.0
+} ]

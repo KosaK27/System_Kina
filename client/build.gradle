@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'com.gradleup.shadow' version '8.3.6'
+}
+
+application {
+    mainClass = 'client.Main'
+}
+
+javafx {
+    version = '25.0.2'
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2'
+}
+
+tasks.shadowJar {
+    archiveBaseName = 'kino-klient'
+    archiveClassifier = ''
+    archiveVersion = ''
+    mergeServiceFiles()
+    manifest {
+        attributes 'Main-Class': 'client.Main'
+    }
+}
+
+tasks.build {
+    dependsOn tasks.shadowJar
+}

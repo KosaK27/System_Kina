@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.SellController"
+      spacing="14">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <Label text="Sprzedaż biletu dla klienta"
+           style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Film:">
+            <minWidth>70</minWidth>
+        </Label>
+        <ComboBox fx:id="movieCombo" prefWidth="350"/>
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Seans:">
+            <minWidth>70</minWidth>
+        </Label>
+        <ComboBox fx:id="screeningCombo" prefWidth="350"/>
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Klient:">
+            <minWidth>70</minWidth>
+        </Label>
+        <ComboBox fx:id="clientCombo" prefWidth="280"/>
+    </HBox>
+
+    <Button text="Wybierz miejsca i sprzedaj bilet" onAction="#openSeatPicker"/>
+
+    <Label fx:id="statusLabel"/>
+</VBox>

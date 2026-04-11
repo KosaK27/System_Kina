@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.UsersController"
+      spacing="8">
+    <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+
+    <HBox spacing="8" alignment="CENTER_LEFT">
+        <TextField fx:id="searchField" prefWidth="260"
+                   promptText="Szukaj po nazwie lub emailu..."
+                   onAction="#search"/>
+        <Button text="Szukaj" onAction="#search"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Pokaż rezerwacje" onAction="#viewReservations"/>
+        <Button text="Usuń konto" onAction="#deleteUser"/>
+    </HBox>
+
+    <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="userIdCol"
+                         text="ID" prefWidth="60" sortable="true"/>
+            <TableColumn fx:id="userNameCol"
+                         text="Nazwa" prefWidth="180" sortable="true"/>
+            <TableColumn fx:id="userEmailCol"
+                         text="Email" prefWidth="220" sortable="true"/>
+            <TableColumn fx:id="userRoleCol"
+                         text="Rola" prefWidth="100" sortable="true"/>
+        </columns>
+    </TableView>
+
+    <Label fx:id="statusLabel"/>
+</VBox>

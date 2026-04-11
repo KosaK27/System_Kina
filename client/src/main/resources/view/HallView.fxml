@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.HallController"
+      spacing="8">
+    <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+
+    <HBox spacing="8" alignment="CENTER_LEFT">
+        <Label text="Zarządzanie salami"
+               style="-fx-font-weight: bold;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Dodaj"  onAction="#addHall"/>
+        <Button text="Edytuj" onAction="#editHall"/>
+        <Button text="Usuń"   onAction="#deleteHall"/>
+    </HBox>
+
+    <TableView fx:id="hallTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="idColumn"
+                         text="ID" prefWidth="60" sortable="true"/>
+            <TableColumn fx:id="nameColumn"
+                         text="Nazwa sali" prefWidth="200" sortable="true"/>
+            <TableColumn fx:id="rowsColumn"
+                         text="Rzędy" prefWidth="100" sortable="true"/>
+            <TableColumn fx:id="seatsPerRowColumn"
+                         text="Miejsc w rzędzie" prefWidth="150" sortable="true"/>
+        </columns>
+    </TableView>
+
+    <Label fx:id="statusLabel"/>
+</VBox>

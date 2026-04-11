@@ -1,0 +1,257 @@
+/* === PALETA === */
+* {
+    -fx-primary:      #1a1a2e;
+    -fx-secondary:    #16213e;
+    -fx-accent:       #e0b84b;
+    -fx-accent-dark:  #c9962a;
+    -fx-danger:       #8b2020;
+    -fx-success:      #27ae60;
+    -fx-muted:        #aaaaaa;
+    -fx-text:         #eeeeee;
+    -fx-border-soft:  #2a2a4a;
+}
+
+/* === OKNO === */
+.root {
+    -fx-background-color: #1a1a2e;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+}
+
+/* === ETYKIETY === */
+.label {
+    -fx-text-fill: #eeeeee;
+}
+
+.label-muted {
+    -fx-text-fill: #aaaaaa;
+    -fx-font-size: 11px;
+}
+
+.label-title {
+    -fx-text-fill: #e0b84b;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.label-section {
+    -fx-text-fill: #e0b84b;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* === PRZYCISKI === */
+.button {
+    -fx-background-color: #2a2a4a;
+    -fx-text-fill: #eeeeee;
+    -fx-background-radius: 4;
+    -fx-padding: 6 14 6 14;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #3a3a6a;
+}
+
+.btn-primary {
+    -fx-background-color: #e0b84b;
+    -fx-text-fill: #1a1a2e;
+    -fx-font-weight: bold;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #c9962a;
+}
+
+.btn-success {
+    -fx-background-color: #27ae60;
+    -fx-text-fill: white;
+}
+
+.btn-success:hover {
+    -fx-background-color: #1e8449;
+}
+
+.btn-danger {
+    -fx-background-color: #8b2020;
+    -fx-text-fill: white;
+}
+
+.btn-danger:hover {
+    -fx-background-color: #6b1818;
+}
+
+.btn-neutral {
+    -fx-background-color: #3a3a5a;
+    -fx-text-fill: #eeeeee;
+}
+
+/* === POLA TEKSTOWE === */
+.text-field, .password-field, .text-area {
+    -fx-background-color: #16213e;
+    -fx-text-fill: #eeeeee;
+    -fx-prompt-text-fill: #666666;
+    -fx-border-color: #2a2a4a;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 7;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #e0b84b;
+}
+
+/* === COMBOBOX === */
+.combo-box {
+    -fx-background-color: #16213e;
+    -fx-border-color: #2a2a4a;
+    -fx-border-radius: 4;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #eeeeee;
+    -fx-background-color: #16213e;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #16213e;
+    -fx-border-color: #2a2a4a;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #2a2a4a;
+}
+
+/* === TABELA === */
+.table-view {
+    -fx-background-color: #16213e;
+    -fx-border-color: #2a2a4a;
+    -fx-table-cell-border-color: #2a2a4a;
+}
+
+.table-view .column-header {
+    -fx-background-color: #0f3460;
+    -fx-border-color: #2a2a4a;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #e0b84b;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell {
+    -fx-background-color: #16213e;
+    -fx-text-fill: #eeeeee;
+    -fx-border-color: transparent transparent #2a2a4a transparent;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #1c2540;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #0f3460;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #223060;
+}
+
+/* Przeszłe seanse */
+.row-past {
+    -fx-text-fill: #666666;
+    -fx-background-color: #111122;
+}
+
+.row-past .table-cell {
+    -fx-text-fill: #666666;
+}
+
+/* Trwające seanse */
+.row-ongoing .table-cell {
+    -fx-text-fill: #27ae60;
+    -fx-font-weight: bold;
+}
+
+/* === ZAKŁADKI === */
+.tab-pane {
+    -fx-background-color: #1a1a2e;
+}
+
+.tab-pane .tab-header-area {
+    -fx-background-color: #16213e;
+}
+
+.tab {
+    -fx-background-color: #16213e;
+    -fx-text-fill: #aaaaaa;
+    -fx-padding: 6 16 6 16;
+}
+
+.tab:selected {
+    -fx-background-color: #1a1a2e;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: #e0b84b;
+    -fx-font-weight: bold;
+}
+
+/* === NAGŁÓWEK GŁÓWNY === */
+.top-bar {
+    -fx-background-color: #16213e;
+    -fx-padding: 10 16 10 16;
+    -fx-border-color: transparent transparent #e0b84b transparent;
+    -fx-border-width: 0 0 2 0;
+}
+
+/* === CHECKBOX === */
+.check-box {
+    -fx-text-fill: #eeeeee;
+}
+
+.check-box .box {
+    -fx-background-color: #16213e;
+    -fx-border-color: #4a4a8a;
+    -fx-border-radius: 3;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #e0b84b;
+}
+
+/* === SCROLL PANE === */
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* === SEPARATOR === */
+.separator .line {
+    -fx-border-color: #2a2a4a;
+}
+
+/* === SPINNER === */
+.spinner {
+    -fx-background-color: #16213e;
+    -fx-border-color: #2a2a4a;
+    -fx-border-radius: 4;
+}
+
+.spinner .text-field {
+    -fx-border-color: transparent;
+}
+
+/* === DATE PICKER === */
+.date-picker {
+    -fx-background-color: #16213e;
+    -fx-border-color: #2a2a4a;
+    -fx-border-radius: 4;
+}
+
+.date-picker .text-field {
+    -fx-border-color: transparent;
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.MainController"
+            prefWidth="1050" prefHeight="700">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="16">
+            <padding>
+                <Insets top="10" right="16" bottom="10" left="16"/>
+            </padding>
+            <Label text="System Kina"
+                   style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="userInfoLabel"/>
+            <Button text="Wyloguj" onAction="#logout"/>
+        </HBox>
+    </top>
+    <center>
+        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
+            <Tab fx:id="moviesTab" text="Filmy"/>
+            <Tab fx:id="screeningsTab" text="Seanse"/>
+            <Tab fx:id="reservationsTab" text="Moje Rezerwacje"/>
+            <Tab fx:id="allReservationsTab" text="Rezerwacje"/>
+            <Tab fx:id="usersTab" text="Użytkownicy"/>
+            <Tab fx:id="sellTab" text="Sprzedaż"/>
+            <Tab fx:id="hallsTab" text="Sale"/>
+        </TabPane>
+    </center>
+</BorderPane>
