@@ -6,7 +6,6 @@ import util.AuthFilter;
 import util.JsonUtil;
 import spark.Request;
 import spark.Response;
-
 import static spark.Spark.*;
 
 public class HallRoutes {
@@ -31,61 +30,34 @@ public class HallRoutes {
         String err = validate(hall, false);
         if (err != null) return JsonUtil.toJson(ApiResponse.error(err));
 
-        DataStore ds = DataStore.getInstance();
-        hall.setId(ds.nextHallId());
-        ds.getHalls().add(hall);
-        ds.saveHalls();
+        DataStore.getInstance().insertHall(hall);
         return JsonUtil.toJson(ApiResponse.ok(hall));
     }
 
     private Object updateName(Request req, Response res) {
         res.type("application/json");
         AuthFilter.requireRole(req, res, "ADMIN");
-
         int id = Integer.parseInt(req.params("id"));
         Hall incoming = JsonUtil.fromJson(req.body(), Hall.class);
-
         if (incoming.getName() == null || incoming.getName().isBlank())
             return JsonUtil.toJson(ApiResponse.error("Nazwa nie może być pusta."));
 
         DataStore ds = DataStore.getInstance();
-        Hall existing = ds.getHalls().stream()
-                .filter(h -> h.getId() == id)
-                .findFirst()
-                .orElse(null);
-
+        Hall existing = ds.getHalls().stream().filter(h -> h.getId() == id).findFirst().orElse(null);
         if (existing == null)
             return JsonUtil.toJson(ApiResponse.error("Sala nie istnieje."));
 
         existing.setName(incoming.getName());
-        ds.saveHalls();
-
+        ds.updateHall(existing);
         return JsonUtil.toJson(ApiResponse.ok(existing));
     }
 
     private Object deleteHall(Request req, Response res) {
         res.type("application/json");
         AuthFilter.requireRole(req, res, "ADMIN");
-
         int id = Integer.parseInt(req.params("id"));
-        DataStore ds = DataStore.getInstance();
-
-        ds.getHalls().removeIf(h -> h.getId() == id);
-        cancelReservationsForHall(id, ds);
-
-        ds.saveHalls();
-        ds.saveReservations();
-
+        DataStore.getInstance().deleteHall(id);
         return JsonUtil.toJson(ApiResponse.ok());
-    }
-
-    private void cancelReservationsForHall(int hallId, DataStore ds) {
-        ds.getScreenings().stream()
-                .filter(s -> s.getHallId() == hallId)
-                .forEach(s -> ds.getReservations().stream()
-                        .filter(r -> r.getScreeningId() == s.getId())
-                        .filter(r -> r.getStatus() != model.Reservation.Status.CANCELLED)
-                        .forEach(r -> r.setStatus(model.Reservation.Status.CANCELLED)));
     }
 
     private String validate(Hall h, boolean nameOnly) {

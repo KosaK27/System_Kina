@@ -29,6 +29,7 @@ public abstract class User {
     public abstract boolean canLogin();
     public boolean canManage() { return false; }
     public boolean isAdmin() { return false; }
+    public boolean isEmployee() { return false; }
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

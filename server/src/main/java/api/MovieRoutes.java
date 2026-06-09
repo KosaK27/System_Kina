@@ -1,13 +1,11 @@
 package api;
 
-import io.jsonwebtoken.Claims;
 import model.Movie;
 import service.DataStore;
 import util.AuthFilter;
 import util.JsonUtil;
 import spark.Request;
 import spark.Response;
-
 import static spark.Spark.*;
 
 public class MovieRoutes {
@@ -32,18 +30,13 @@ public class MovieRoutes {
         String err = validate(movie, -1);
         if (err != null) return JsonUtil.toJson(ApiResponse.error(err));
 
-        DataStore ds = DataStore.getInstance();
-        movie.setId(ds.nextMovieId());
-        ds.getMovies().add(movie);
-        ds.saveMovies();
-
+        DataStore.getInstance().insertMovie(movie);
         return JsonUtil.toJson(ApiResponse.ok(movie));
     }
 
     private Object update(Request req, Response res) {
         res.type("application/json");
         AuthFilter.requireRole(req, res, "ADMIN", "EMPLOYEE");
-
         int id = Integer.parseInt(req.params("id"));
         Movie updated = JsonUtil.fromJson(req.body(), Movie.class);
         updated.setId(id);
@@ -51,23 +44,15 @@ public class MovieRoutes {
         String err = validate(updated, id);
         if (err != null) return JsonUtil.toJson(ApiResponse.error(err));
 
-        DataStore ds = DataStore.getInstance();
-        ds.getMovies().replaceAll(m -> m.getId() == id ? updated : m);
-        ds.saveMovies();
-
+        DataStore.getInstance().updateMovie(updated);
         return JsonUtil.toJson(ApiResponse.ok(updated));
     }
 
     private Object deleteMovie(Request req, Response res) {
         res.type("application/json");
         AuthFilter.requireRole(req, res, "ADMIN", "EMPLOYEE");
-
         int id = Integer.parseInt(req.params("id"));
-        DataStore ds = DataStore.getInstance();
-
-        ds.getMovies().removeIf(m -> m.getId() == id);
-        ds.saveMovies();
-
+        DataStore.getInstance().deleteMovie(id);
         return JsonUtil.toJson(ApiResponse.ok());
     }
 
@@ -80,13 +65,10 @@ public class MovieRoutes {
             return "Czas trwania: " + Movie.MIN_DURATION + "–" + Movie.MAX_DURATION + " min.";
         if (m.getGenre() == null || !Movie.GENRES.contains(m.getGenre()))
             return "Nieznany gatunek.";
-
         boolean dup = DataStore.getInstance().getMovies().stream()
                 .filter(x -> x.getId() != excludeId)
                 .anyMatch(x -> x.getTitle().equalsIgnoreCase(m.getTitle().trim()));
-
         if (dup) return "Film o tym tytule już istnieje.";
-
         return null;
     }
 }
