@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.AdminPanelController" spacing="15">
+
+    <Label text="PANEL ADMINISTRATORA - Pełne Uprawnienia" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="searchField" promptText="Szukaj użytkownika..." prefWidth="250" onKeyReleased="#handleSearch"/>
+        <Button text="Usuń Użytkownika" onAction="#handleDeleteUser" style="-fx-background-color: #d9534f; -fx-text-fill: white;"/>
+        <Label fx:id="statusLabel" text="Status..."/>
+    </HBox>
+
+    <TableView fx:id="usersTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="idCol" text="ID" prefWidth="60"/>
+            <TableColumn fx:id="nameCol" text="Nazwa / Imię" prefWidth="130"/>
+            <TableColumn fx:id="emailCol" text="Adres E-mail" prefWidth="200"/>
+            <TableColumn fx:id="roleCol" text="Rola systemowa" prefWidth="120"/>
+            <TableColumn fx:id="actionCol" text="Zmień uprawnienia" prefWidth="150"/>
+        </columns>
+    </TableView>
+
+    <Separator/>
+
+    <Label text="Generowanie Raportów Sprzedaży (Baza Oracle)" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label text="Wybierz film:"/>
+        <ComboBox fx:id="movieComboBox" prefWidth="220" promptText="-- Wybierz film z bazy --"/>
+        <Button text="Generuj raport sprzedaży" onAction="#handleGenerateReport" style="-fx-background-color: #5cb85c; -fx-text-fill: white; -fx-font-weight: bold;"/>
+    </HBox>
+
+    <TextArea fx:id="reportTextArea" prefHeight="150" editable="false"
+              style="-fx-font-family: 'Courier New'; -fx-font-size: 13px;"/>
+</VBox>

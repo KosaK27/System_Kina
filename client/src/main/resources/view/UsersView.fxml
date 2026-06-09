@@ -1,35 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.Insets?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controller.UsersController"
-      spacing="8">
-    <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.UsersController" spacing="15">
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15"/>
+    </padding>
 
-    <HBox spacing="8" alignment="CENTER_LEFT">
-        <TextField fx:id="searchField" prefWidth="260"
-                   promptText="Szukaj po nazwie lub emailu..."
-                   onAction="#search"/>
-        <Button text="Szukaj" onAction="#search"/>
-        <Region HBox.hgrow="ALWAYS"/>
-        <Button text="Pokaż rezerwacje" onAction="#viewReservations"/>
-        <Button text="Usuń konto" onAction="#deleteUser"/>
+    <Label text="Zarządzanie Użytkownikami i Pracownikami" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="searchField" promptText="Szukaj po e-mailu lub nazwie..." prefWidth="250" onKeyReleased="#handleSearch"/>
+        <Button text="Usuń Wybranego" onAction="#handleDeleteUser" style="-fx-background-color: #d9534f; -fx-text-fill: white;"/>
+        <Label fx:id="statusLabel" text="Ładowanie..." style="-fx-text-fill: gray;"/>
     </HBox>
 
-    <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
+    <TableView fx:id="usersTable" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="userIdCol"
-                         text="ID" prefWidth="60" sortable="true"/>
-            <TableColumn fx:id="userNameCol"
-                         text="Nazwa" prefWidth="180" sortable="true"/>
-            <TableColumn fx:id="userEmailCol"
-                         text="Email" prefWidth="220" sortable="true"/>
-            <TableColumn fx:id="userRoleCol"
-                         text="Rola" prefWidth="100" sortable="true"/>
+            <TableColumn fx:id="idCol" text="ID" prefWidth="60"/>
+            <TableColumn fx:id="nameCol" text="Nazwa / Imię" prefWidth="150"/>
+            <TableColumn fx:id="emailCol" text="Adres E-mail" prefWidth="250"/>
+            <TableColumn fx:id="roleCol" text="Rola systemowa" prefWidth="150"/>
         </columns>
     </TableView>
-
-    <Label fx:id="statusLabel"/>
 </VBox>

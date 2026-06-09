@@ -16,50 +16,36 @@ import java.util.List;
 
 public class UsersController {
 
-    @FXML private TableView<User> userTable;
-    @FXML private TableColumn<User,Integer> userIdCol;
-    @FXML private TableColumn<User,String> userNameCol;
-    @FXML private TableColumn<User,String> userEmailCol;
-    @FXML private TableColumn<User,String> userRoleCol;
     @FXML private TextField searchField;
     @FXML private Label statusLabel;
+    @FXML private TableView<User> usersTable;
+    @FXML private TableColumn<User, Integer> idCol;
+    @FXML private TableColumn<User, String> nameCol;
+    @FXML private TableColumn<User, String> emailCol;
+    @FXML private TableColumn<User, String> roleCol;
 
-    private final ObservableList<User> userList = FXCollections.observableArrayList();
-    private FilteredList<User> filteredList;
+    private final ObservableList<User> usersList = FXCollections.observableArrayList();
+    private FilteredList<User> filteredUsers;
 
     @FXML
     public void initialize() {
+        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
+        roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
 
-        userIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        userNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        userEmailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
-        userRoleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
+        filteredUsers = new FilteredList<>(usersList, p -> true);
+        SortedList<User> sortedUsers = new SortedList<>(filteredUsers);
+        sortedUsers.comparatorProperty().bind(usersTable.comparatorProperty());
+        usersTable.setItems(sortedUsers);
 
-        userTable.setRowFactory(tv -> {
-            TableRow<User> row = new TableRow<>();
-            row.setOnMouseClicked(e -> {
-                if (e.getClickCount() == 2 && !row.isEmpty()) {
-                    MainController mc = MainController.getInstance();
-                    if (mc != null) mc.switchToAllReservationsFilteredByUser(row.getItem().getName());
-                }
-            });
-            return row;
-        });
-
-        filteredList = new FilteredList<>(userList,u -> true);
-        SortedList<User> sorted = new SortedList<>(filteredList);
-        sorted.comparatorProperty().bind(userTable.comparatorProperty());
-        userTable.setItems(sorted);
-        userTable.setPlaceholder(new Label("Brak użytkowników."));
-
-        loadUsers();
+        loadData();
     }
 
-    public void loadUsers() {
+    public void loadData() {
+        if (statusLabel != null) statusLabel.setText("Odświeżanie bazy użytkowników...");
 
-        statusLabel.setText("Ładowanie...");
-
-        Task<List<User>> task = new Task<>() {
+        Task<List<User>> task = new Task<> () {
             @Override
             protected List<User> call() throws Exception {
                 return ApiClient.getInstance().getUsers();
@@ -67,69 +53,53 @@ public class UsersController {
         };
 
         task.setOnSucceeded(e -> {
-            userList.setAll(task.getValue());
-            statusLabel.setText("Użytkownicy: " + task.getValue().size());
+            if (task.getValue() != null) {
+                usersList.setAll(task.getValue());
+            }
+            if (statusLabel != null) statusLabel.setText("Wszystkich kont: " + usersList.size());
         });
 
-        task.setOnFailed(e -> statusLabel.setText("Błąd połączenia."));
-        new Thread(task).start();
-    }
-
-    @FXML
-    public void search() {
-
-        String keyword = searchField.getText().toLowerCase();
-
-        filteredList.setPredicate(u ->
-                keyword.isEmpty()
-                        || u.getName().toLowerCase().contains(keyword)
-                        || (u.getEmail() != null && u.getEmail().toLowerCase().contains(keyword))
-                        || u.getRole().toLowerCase().contains(keyword)
-        );
-    }
-
-    @FXML
-    public void viewReservations() {
-
-        User sel = userTable.getSelectionModel().getSelectedItem();
-
-        if (sel == null) {
-            AlertHelper.error("Wybierz użytkownika.");
-            return;
-        }
-
-        MainController mc = MainController.getInstance();
-        if (mc != null) mc.switchToAllReservationsFilteredByUser(sel.getName());
-    }
-
-    @FXML
-    public void deleteUser() {
-
-        User sel = userTable.getSelectionModel().getSelectedItem();
-
-        if (sel == null) {
-            AlertHelper.error("Wybierz użytkownika.");
-            return;
-        }
-
-        if (sel.getId() == model.Session.getLoggedUser().getId()) {
-            AlertHelper.error("Nie możesz usunąć własnego konta.");
-            return;
-        }
-
-        if (!AlertHelper.confirm("Usunąć użytkownika \"" + sel.getName() + "\"?")) return;
-
-        Task<Void> task = new Task<>() {
-            @Override
-            protected Void call() throws Exception {
-                ApiClient.getInstance().deleteUser(sel.getId());
-                return null;
-            }
-        };
-
-        task.setOnSucceeded(e -> loadUsers());
-        task.setOnFailed(e -> AlertHelper.error("Błąd połączenia."));
+        task.setOnFailed(e -> {
+            if (statusLabel != null) statusLabel.setText("Błąd ładowania danych z serwera.");
+        });
 
         new Thread(task).start();
+    }
+
+    public void loadUsers() {
+        loadData();
+    }
+
+    @FXML
+    private void handleSearch() {
+        String keyword = searchField.getText().toLowerCase().trim();
+        filteredUsers.setPredicate(user -> {
+            if (keyword.isEmpty()) return true;
+            return (user.getEmail() != null && user.getEmail().toLowerCase().contains(keyword))
+                    || (user.getName() != null && user.getName().toLowerCase().contains(keyword));
+        });
+    }
+
+    @FXML
+    private void handleDeleteUser() {
+        User selected = usersTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            AlertHelper.error("Wybierz konto z tabeli.");
+            return;
+        }
+        if (selected.getId() == 1 || "ADMIN".equals(selected.getRole())) {
+            AlertHelper.error("Nie można usunąć konta administratora.");
+            return;
+        }
+        if (AlertHelper.confirm("Usunąć użytkownika " + selected.getEmail() + "?")) {
+            new Thread(() -> {
+                try {
+                    ApiClient.getInstance().deleteUser(selected.getId());
+                    javafx.application.Platform.runLater(this::loadData);
+                } catch (Exception ex) {
+                    javafx.application.Platform.runLater(() -> AlertHelper.error("Błąd zapisu."));
+                }
+            }).start();
+        }
     }
 }

@@ -103,7 +103,14 @@ public class ApiClient {
     }
 
     public List<User> getUsers() throws Exception {
-        return extractList(get("/users").body(), new TypeReference<>() {});
+        return extractList(get("/users").body(), new TypeReference<List<User>>() {});
+    }
+
+    public void updateUser(User user) throws Exception {
+        var res = put("/users", user);
+        if (!isSuccess(res.body())) {
+            throw new RuntimeException(errorMsg(res.body()));
+        }
     }
 
     public void deleteUser(int id) throws Exception { delete("/users/" + id); }
@@ -114,8 +121,14 @@ public class ApiClient {
         return extractData(res.body(), User.class);
     }
 
+    public List<MovieReport> getMovieReports() throws Exception {
+        var res = get("/reports/movies");
+        if (!isSuccess(res.body())) throw new RuntimeException(errorMsg(res.body()));
+        return extractList(res.body(), new TypeReference<List<MovieReport>>() {});
+    }
+
     public List<Movie> getMovies() throws Exception {
-        return extractList(get("/movies").body(), new TypeReference<>() {});
+        return extractList(get("/movies").body(), new TypeReference<List<Movie>>() {});
     }
 
     public Optional<String> saveMovie(Movie movie) throws Exception {
@@ -128,7 +141,7 @@ public class ApiClient {
     public void deleteMovie(int id) throws Exception { delete("/movies/" + id); }
 
     public List<Hall> getHalls() throws Exception {
-        return extractList(get("/halls").body(), new TypeReference<>() {});
+        return extractList(get("/halls").body(), new TypeReference<List<Hall>>() {});
     }
 
     public Optional<String> saveHall(Hall hall) throws Exception {
@@ -141,11 +154,11 @@ public class ApiClient {
     public void deleteHall(int id) throws Exception { delete("/halls/" + id); }
 
     public List<Screening> getScreeningsByMovie(int movieId) throws Exception {
-        return extractList(get("/screenings/movie/" + movieId).body(), new TypeReference<>() {});
+        return extractList(get("/screenings/movie/" + movieId).body(), new TypeReference<List<Screening>>() {});
     }
 
     public List<Screening> getAllScreenings() throws Exception {
-        return extractList(get("/screenings").body(), new TypeReference<>() {});
+        return extractList(get("/screenings").body(), new TypeReference<List<Screening>>() {});
     }
 
     public Optional<String> saveScreening(Screening s) throws Exception {
@@ -158,15 +171,15 @@ public class ApiClient {
     public void deleteScreening(int id) throws Exception { delete("/screenings/" + id); }
 
     public List<Reservation> getMyReservations(int userId) throws Exception {
-        return extractList(get("/reservations/user/" + userId).body(), new TypeReference<>() {});
+        return extractList(get("/reservations/user/" + userId).body(), new TypeReference<List<Reservation>>() {});
     }
 
     public List<Reservation> getAllReservations() throws Exception {
-        return extractList(get("/reservations").body(), new TypeReference<>() {});
+        return extractList(get("/reservations").body(), new TypeReference<List<Reservation>>() {});
     }
 
     public List<Reservation> getReservationsForScreening(int screeningId) throws Exception {
-        return extractList(get("/reservations/screening/" + screeningId).body(), new TypeReference<>() {});
+        return extractList(get("/reservations/screening/" + screeningId).body(), new TypeReference<List<Reservation>>() {});
     }
 
     public Optional<String> reserve(int screeningId, List<List<Integer>> seats) throws Exception {

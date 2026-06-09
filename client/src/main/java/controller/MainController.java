@@ -17,11 +17,14 @@ public class MainController {
     @FXML private Tab hallsTab;
     @FXML private Label userInfoLabel;
 
+    private Tab adminPanelTab;
+
     private ScreeningController screeningController;
     private ReservationController reservationController;
     private EmployeeReservationController allReservationsController;
     private UsersController usersController;
     private SellController sellController;
+    private AdminPanelController adminPanelController;
 
     private static MainController instance;
 
@@ -42,7 +45,9 @@ public class MainController {
             tabPane.getTabs().removeAll(allReservationsTab, usersTab, sellTab, hallsTab);
         } else {
             tabPane.getTabs().remove(reservationsTab);
-            if (!isAdmin) tabPane.getTabs().remove(hallsTab);
+            if (!isAdmin) {
+                tabPane.getTabs().remove(hallsTab);
+            }
         }
 
         loadTab(moviesTab, "/view/MovieView.fxml");
@@ -58,6 +63,11 @@ public class MainController {
         }
         if (isAdmin) {
             loadTab(hallsTab, "/view/HallView.fxml");
+
+            adminPanelTab = new Tab("Panel Administratora");
+            adminPanelTab.setClosable(false);
+            adminPanelController = loadTab(adminPanelTab, "/view/AdminPanelView.fxml");
+            tabPane.getTabs().add(adminPanelTab);
         }
 
         tabPane.getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
@@ -69,9 +79,11 @@ public class MainController {
             } else if (newTab == screeningsTab && screeningController != null) {
                 screeningController.loadAll();
             } else if (newTab == usersTab && usersController != null) {
-                usersController.loadUsers();
+                adminPanelController.loadData();
             } else if (newTab == sellTab && sellController != null) {
                 sellController.loadData();
+            } else if (newTab == adminPanelTab && adminPanelController != null) {
+                adminPanelController.loadData();
             }
         });
     }
