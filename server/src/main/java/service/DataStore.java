@@ -43,12 +43,8 @@ public class DataStore {
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 String role = rs.getString("role");
-                User u = switch (role) {
-                    case "ADMIN" -> new Admin();
-                    case "EMPLOYEE" -> new Employee();
-                    case "CLIENT" -> new Client();
-                    default -> new GuestClient();
-                };
+                User u = factory.UserFactory.createUser(role);
+
                 u.setId(rs.getInt("id"));
                 u.setEmail(rs.getString("email"));
                 u.setPasswordHash(rs.getString("password_hash"));
@@ -235,13 +231,15 @@ public class DataStore {
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                Screening s = new Screening(
-                        rs.getInt("id"),
-                        rs.getInt("movie_id"),
-                        rs.getInt("hall_id"),
-                        rs.getTimestamp("screening_time").toLocalDateTime(),
-                        rs.getDouble("ticket_price")
-                );
+
+                Screening s = Screening.builder()
+                        .id(rs.getInt("id"))
+                        .movieId(rs.getInt("movie_id"))
+                        .hallId(rs.getInt("hall_id"))
+                        .startTime(rs.getTimestamp("screening_time").toLocalDateTime())
+                        .ticketPrice(rs.getDouble("ticket_price"))
+                        .build();
+
                 list.add(s);
             }
         } catch (SQLException e) {
@@ -345,11 +343,13 @@ public class DataStore {
                     }
                 }
 
+                String seatsJsonOrString = JsonUtil.toJson(r.getSeats());
+
                 try (PreparedStatement stmtRes = conn.prepareStatement(sqlReservation, new String[]{"ID"})) {
                     stmtRes.setInt(1, r.getScreeningId());
                     stmtRes.setInt(2, r.getUserId());
                     stmtRes.setString(3, r.getStatus().name());
-                    stmtRes.setString(4, JsonUtil.toJson(r.getSeats()));
+                    stmtRes.setString(4, seatsJsonOrString);
                     stmtRes.executeUpdate();
 
                     try (ResultSet gk = stmtRes.getGeneratedKeys()) {
@@ -358,8 +358,15 @@ public class DataStore {
                 }
 
                 if (r.getStatus() == Reservation.Status.PAID) {
-                    int seatsCount = (r.getSeats() != null) ? r.getSeats().size() : 0;
-                    double totalPrice = seatsCount * singleTicketPrice;
+                    int seatsCount = 0;
+
+                    if (seatsJsonOrString != null && !seatsJsonOrString.trim().isEmpty()) {
+                        String cleanSeats = seatsJsonOrString.replace("\"", "");
+                        seatsCount = cleanSeats.split(",").length;
+                    }
+
+                    strategy.PriceStrategy priceStrategy = new strategy.RegularPriceStrategy();
+                    double totalPrice = priceStrategy.calculatePrice(singleTicketPrice, seatsCount);
 
                     try (PreparedStatement stmtTicket = conn.prepareStatement(sqlTicketSold)) {
                         stmtTicket.setInt(1, r.getScreeningId());

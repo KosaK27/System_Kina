@@ -27,6 +27,37 @@ public class Screening {
         this.ticketPrice = ticketPrice;
     }
 
+
+    public static class Builder {
+        private int id;
+        private int movieId;
+        private int hallId;
+        private LocalDateTime startTime;
+        private double ticketPrice;
+        private String movieTitle;
+        private String hallName;
+
+        public Builder id(int id) { this.id = id; return this; }
+        public Builder movieId(int movieId) { this.movieId = movieId; return this; }
+        public Builder hallId(int hallId) { this.hallId = hallId; return this; }
+        public Builder startTime(LocalDateTime startTime) { this.startTime = startTime; return this; }
+        public Builder ticketPrice(double ticketPrice) { this.ticketPrice = ticketPrice; return this; }
+        public Builder movieTitle(String movieTitle) { this.movieTitle = movieTitle; return this; }
+        public Builder hallName(String hallName) { this.hallName = hallName; return this; }
+
+        public Screening build() {
+            Screening screening = new Screening(id, movieId, hallId, startTime, ticketPrice);
+            screening.setMovieTitle(this.movieTitle);
+            screening.setHallName(this.hallName);
+            return screening;
+        }
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+
     @JsonIgnore
     public boolean isPast() {
         return startTime != null && startTime.isBefore(LocalDateTime.now());
@@ -43,6 +74,7 @@ public class Screening {
     public String getFormattedTime() {
         return startTime != null ? startTime.format(FMT) : "";
     }
+
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
